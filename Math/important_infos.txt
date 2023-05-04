@@ -1,0 +1,96 @@
+n = qd + r and r >= 0 and r < d
+
+if r == 0 then d | n 
+
+if gcd(a,b) == g then g | a and g | b and no k > g, such than k | a and k | b
+
+lemma 1: 
+	gcd(a,b) = gcd(b,a), "since logical and is cummutative"
+
+lemma 2: 
+	gcd(a,0) = a, "since a = 1 * a + 0 and 0 = 0 * a + 0 and no k > a | a"
+
+lemma 3:
+	gcd(a,b) = gcd(b,a-b) = g
+	since
+	assume g | a and g | b and no k > g such that k | g
+	 g = gcd(a,b)
+	 a = q1 * g + 0
+	 b = q2 * g + 0
+	 a - b = (q1 - q2) * g + 0 then g | (a - b)
+	assume k > g such that k | b and k | (a - b)
+	 b = q3 * k + 0
+	 a - b = q4 * k + 0
+	 a - b + b = (q3 + q4) * k + 0 
+	 => a = (q3 + q4) * k + 0 then k | a
+	 then gcd(a,b) = k, since k > g then g not gcd(a,b) contradiction!!!
+	 then k does not exist which mean gcd(b,a-b) = g
+
+lemma 4: gcd(a,b) = gcd(b,a mod b)
+	since, from lemma 3 gcd(a,b) = gcd(b,a - b) = gcd(b,a-2b) = gcd(b,a-3b) =..... = gcd(b,a-qb)
+
+
+ll gcd(ll a, ll b){
+	return b ? gcd(b,a % b) : a;
+}
+
+ax + by = c
+ax + by = mg where g = gcd(a,b), m = any integer
+divde by g
+a / g * x + b / g * y = c / g
+
+ax' + by' = g
+
+r0 = a
+r1 = b
+ri = r(i-2) mod r(i-1)
+if rk = 0 then r(k-1) = gcd(a,b)
+
+axi + byi = ri
+ax0 + by0 = r0 = a
+x0 = 1, y0 = 0
+
+ax1 + by1 = r1 = b
+x1 = 0, y1 = 1
+
+if q = floor(r(i-2) / r(i-1))
+then ri = r(i-2) - q * r(i-1)
+ri = ax(i-2) + by(i-2) - q[ax(i-1) + by(i-1)]
+ri = a[x(i-2) - qx(i-1)] + b[y(i-2) - qy(i-1)]
+
+if(xi = x(i-2) - qx(i-1) and yi = y(i-2) - qy(i-1)) 
+ then ri = axi + byi
+
+void moveOneStepInSeq(ll &r0,ll &r1,ll q){
+	ll r2 = r0 - q * r1;
+	r0 = r1;
+	r1 = r2;
+}
+ll egcd(ll r0, ll r1, ll &x0,ll &y0){
+	ll y1 = x0 = 1, x1 = y0 = 0;
+	while(r1){
+		int q = r0 / r1;
+		moveOneStepInSeq(r0,r1,q);
+		moveOneStepInSeq(x0,x1,q);
+		moveOneStepInSeq(y0,y1,q);
+	}
+	return r0;
+}
+bool solveLDE(ll a,ll b,ll c, ll &x, ll &y, ll &g){
+	g = egcd(a,b,x,y);
+	ll m = c / g;
+	x *= m;
+	y *= m;
+	return !(c % g);
+}
+
+ax + by = 1
+(ax) % b + (by) % b = 1 % b
+(ax) % b = 1
+
+ll modInv(ll a,ll m){
+	ll x,y;
+	ll g = egcd(a,m,x,y);
+	if(g!=1) throw string ("Number are Not Co-PRIMES !!!!!!!");
+	return (x % m + m) % m
+}
