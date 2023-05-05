@@ -65,15 +65,37 @@ void CalcSP()
 }
 
 
-vector<int> getFactorization(int x)
-{   CalcSP();
-    vector<int> ret;
-    while (x != 1)
+// vector<int> getFactorization(int x)
+// {   CalcSP();
+//     vector<int> ret;
+//     while (x != 1)
+//     {
+//         ret.push_back(sp[x]);
+//         x = x / sp[x];
+//     }
+//     return ret;
+// }
+
+int fact[MAXN];
+void getFactorization(int x)
+{
+    unordered_set<int>st;
+    for(int i = 1 ; i * i <= x ; i++)
     {
-        ret.push_back(sp[x]);
-        x = x / sp[x];
+        if(x%i == 0 )
+        {   if(st.find(i) == st.end())
+            {
+//                ans.push_back(i);
+                  fact[i]++;
+                st.insert(i);
+            }
+            if(i *i != x && st.find(x/i) == st.end()){
+
+                fact[x/i]++;
+                st.insert(x/i);
+            }
+        }
     }
-    return ret;
 }
 
 
